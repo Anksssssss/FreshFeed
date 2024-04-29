@@ -33,6 +33,7 @@ class SavedNewsActivity : AppCompatActivity(),SavedNewsAdapter.RecyclerViewEvent
         viewModel = ViewModelProvider(this).get(SavedNewsViewModel::class.java)
         myApplication = this.application as MyApplication
         repository = myApplication.newsRepository
+        viewModel.repository = repository
 
         initView()
         setObservers()
@@ -84,6 +85,7 @@ class SavedNewsActivity : AppCompatActivity(),SavedNewsAdapter.RecyclerViewEvent
             putString("title",article.title)
             putString("description",article.description)
             putString("source",article.source)
+            putString("url",article.url)
         }
         val intent = Intent(this, SummaryActivity::class.java)
         intent.putExtras(bundle)

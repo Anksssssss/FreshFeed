@@ -7,12 +7,14 @@ import com.example.freshfeed.api.Resource
 import com.example.freshfeed.db.NewsDatabase
 import com.example.freshfeed.models.Article
 import com.example.freshfeed.models.SavedArticles
+import com.example.freshfeed.models.Summary
 import com.example.freshfeed.models.TopHeadlines
 
 
 class Repository(
     private val newsApi: NewsApi,
-    private val newsDatabase: NewsDatabase
+    private val newsDatabase: NewsDatabase,
+    private val summaryApi: NewsApi
 ):BaseRepo() {
 
     suspend fun getTopHeadlines(
@@ -49,6 +51,13 @@ class Repository(
 
     fun deleteSavedArticle(article: SavedArticles){
         newsDatabase.newsDao().deleteFromSavedNews(article)
+    }
+
+    suspend fun getSummary(
+        url: String,
+        sentences: Int
+    ): Resource<Summary> {
+        return safeApiCall { summaryApi.getSummary(BuildConfig.summaryKey,url,sentences) }
     }
 
 }

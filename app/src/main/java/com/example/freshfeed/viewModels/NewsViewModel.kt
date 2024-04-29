@@ -13,9 +13,9 @@ import com.example.freshfeed.repo.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NewsViewModel(application: Application):AndroidViewModel(application) {
+class NewsViewModel:ViewModel(){
 
-    val repository = (application as MyApplication).newsRepository
+    lateinit var repository:Repository
     val generalNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val businessNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val entertainmentNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
@@ -23,7 +23,6 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
     val scienceNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val sportsNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val technologyNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
-    val searchNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
 
     fun getTopHeadlines(category: String = "general") {
         // Based on the category, update the appropriate LiveData
@@ -48,18 +47,6 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
                 liveDataToUpdate.postValue(response)
             } catch (e: Exception) {
                 liveDataToUpdate.postValue(Resource.Error(e.message.toString()))
-            }
-        }
-    }
-
-    fun searchNews(query:String){
-        searchNewsLiveData.postValue(Resource.Loading())
-        viewModelScope.launch(Dispatchers.IO) {
-            try{
-                val response = repository.getSearchedNews(query)
-                searchNewsLiveData.postValue(response)
-            }catch (e: Exception){
-                searchNewsLiveData.postValue(Resource.Error(e.message.toString()))
             }
         }
     }

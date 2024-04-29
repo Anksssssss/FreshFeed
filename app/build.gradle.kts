@@ -24,10 +24,11 @@ android {
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
-        //return empty key in case something goes wrong
         val apiKey = properties.getProperty("API_KEY") ?: ""
+        val summaryKey = properties.getProperty("SUMMARY_KEY") ?: ""
 
         buildConfigField("String", "apiKey", apiKey)
+        buildConfigField("String", "summaryKey", summaryKey)
     }
 
     buildTypes {

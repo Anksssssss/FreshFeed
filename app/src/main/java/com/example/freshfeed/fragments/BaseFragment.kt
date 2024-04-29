@@ -54,6 +54,7 @@ abstract class BaseNewsFragment : Fragment(), NewsAdapter.RecyclerViewEvent {
         super.onViewCreated(view, savedInstanceState)
         myApplication = requireActivity().application as MyApplication
         repository = myApplication.newsRepository
+        viewModel.repository = repository
         initView()
         setObservers()
     }
@@ -142,7 +143,7 @@ abstract class BaseNewsFragment : Fragment(), NewsAdapter.RecyclerViewEvent {
             putString("title",article.title)
             putString("description",article.description)
             putString("source",article.source?.name)
-
+            putString("url",article.url)
         }
         val intent = Intent(requireContext(), SummaryActivity::class.java)
         intent.putExtras(bundle)

@@ -10,6 +10,7 @@ data class SavedArticles(
     val title: String?,
     val description: String?,
     val image: String?,
-    val source: String?
+    val source: String?,
+    val url: String?
 
 )

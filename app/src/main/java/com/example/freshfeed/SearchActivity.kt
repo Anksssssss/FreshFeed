@@ -7,7 +7,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freshfeed.adapters.NewsAdapter
 import com.example.freshfeed.api.Resource
@@ -15,14 +14,12 @@ import com.example.freshfeed.databinding.ActivitySearchBinding
 import com.example.freshfeed.models.Article
 import com.example.freshfeed.repo.Repository
 import com.example.freshfeed.viewModels.NewsViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.freshfeed.viewModels.SearchViewModel
 
 class SearchActivity : AppCompatActivity(), NewsAdapter.RecyclerViewEvent {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: NewsViewModel
+    private lateinit var viewModel: SearchViewModel
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var myApplication: MyApplication
     private lateinit var repository: Repository
@@ -31,10 +28,10 @@ class SearchActivity : AppCompatActivity(), NewsAdapter.RecyclerViewEvent {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(NewsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
         myApplication = this.application as MyApplication
         repository = myApplication.newsRepository
-
+        viewModel.repository = repository
         initView()
         setListeners()
         setObservers()
@@ -99,6 +96,7 @@ class SearchActivity : AppCompatActivity(), NewsAdapter.RecyclerViewEvent {
             putString("title",article.title)
             putString("description",article.description)
             putString("source",article.source?.name)
+            putString("url",article.url)
         }
         val intent = Intent(this, SummaryActivity::class.java)
         intent.putExtras(bundle)

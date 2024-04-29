@@ -3,17 +3,19 @@ package com.example.freshfeed.viewModels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.freshfeed.MyApplication
 import com.example.freshfeed.api.Resource
 import com.example.freshfeed.models.Article
 import com.example.freshfeed.models.SavedArticles
+import com.example.freshfeed.repo.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SavedNewsViewModel(application: Application): AndroidViewModel(application) {
+class SavedNewsViewModel:ViewModel() {
 
-    val repository = (application as MyApplication).newsRepository
+    lateinit var repository: Repository
     val savedNewsLiveData = MutableLiveData<Resource<List<SavedArticles>>>()
 
     fun getSavedNewsArticles(){

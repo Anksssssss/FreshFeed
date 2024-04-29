@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.freshfeed.models.Article
 import com.example.freshfeed.models.SavedArticles
 
-@Database(entities = [Article::class,SavedArticles::class], version = 8, exportSchema = false)
+@Database(entities = [Article::class,SavedArticles::class], version = 9, exportSchema = false)
 @TypeConverters(SourceTypeConverter::class)
 abstract class NewsDatabase: RoomDatabase() {
 
