@@ -6,7 +6,6 @@ import com.example.freshfeed.api.NewsApi
 import com.example.freshfeed.api.Resource
 import com.example.freshfeed.db.NewsDatabase
 import com.example.freshfeed.models.Article
-import com.example.freshfeed.models.NewsArticles
 import com.example.freshfeed.models.TopHeadlines
 
 
@@ -22,12 +21,12 @@ class Repository(
         return safeApiCall { newsApi.getTopHeadlines(country,category,BuildConfig.apiKey) }
     }
 
-    suspend fun insertArticles(article: NewsArticles) {
-        newsDatabase.newsDao().insert(article)
+    suspend fun insertArticles(articles: List<Article>) {
+        newsDatabase.newsDao().insert(articles)
     }
 
-    fun getAllArticles(): List<NewsArticles> {
-        return newsDatabase.newsDao().getNewsArticles()
+    fun getAllArticles(category:String): List<Article> {
+        return newsDatabase.newsDao().getNewsArticles(category)
     }
 
     fun deleteAllArticles(category:String){

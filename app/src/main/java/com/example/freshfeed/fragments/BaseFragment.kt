@@ -1,29 +1,31 @@
 package com.example.freshfeed.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.freshfeed.MyApplication
+import com.example.freshfeed.SummaryActivity
 import com.example.freshfeed.adapters.NewsAdapter
 import com.example.freshfeed.api.Resource
 import com.example.freshfeed.databinding.FragmentGeneralBinding
-import com.example.freshfeed.models.NewsArticles
+import com.example.freshfeed.models.Article
 import com.example.freshfeed.models.TopHeadlines
 import com.example.freshfeed.repo.Repository
-import com.example.freshfeed.utils.MyUtils
 import com.example.freshfeed.utils.NetworkConnection
 import com.example.freshfeed.viewModels.NewsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class BaseNewsFragment : Fragment() {
+abstract class BaseNewsFragment : Fragment(), NewsAdapter.RecyclerViewEvent {
 
     protected abstract val category: String
 
@@ -66,7 +68,7 @@ abstract class BaseNewsFragment : Fragment() {
             "technology" ->  viewModel.technologyNewsLiveData
             else -> throw IllegalArgumentException("Invalid category: $category")
         }
-        newsAdapter = NewsAdapter()
+        newsAdapter = NewsAdapter(this)
         binding!!.newsRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = newsAdapter
@@ -81,15 +83,14 @@ abstract class BaseNewsFragment : Fragment() {
                 viewModel.getTopHeadlines(category)
             } else {
                 newsLiveData.postValue(Resource.Loading())
-                val dbArticles = repository.getAllArticles()
-                val tempList = MyUtils.filterArticlesByCategory(dbArticles, category)
+                val dbArticles = repository.getAllArticles(category)
                 if (dbArticles.isNotEmpty()) {
                     newsLiveData.postValue(
                         Resource.Success(
                             TopHeadlines(
                                 "",
                                 0,
-                                tempList
+                                dbArticles
                             )
                         )
                     )
@@ -110,22 +111,7 @@ abstract class BaseNewsFragment : Fragment() {
                     newsAdapter.setNewList(response.data!!.articles)
                     viewModel.viewModelScope.launch {
                         withContext(Dispatchers.IO) {
-                            for (article in response.data.articles) {
-                                repository.insertArticles(
-                                    NewsArticles(
-                                        article.id,
-                                        article.source,
-                                        article.author,
-                                        article.title,
-                                        article.description,
-                                        article.url,
-                                        article.urlToImage,
-                                        article.publishedAt,
-                                        article.content,
-                                        category
-                                    )
-                                )
-                            }
+                            repository.insertArticles(response.data.articles)
                         }
                     }
                 }
@@ -146,5 +132,17 @@ abstract class BaseNewsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onItemClick(article: Article) {
+        //Toast.makeText(requireContext(),"$article",Toast.LENGTH_SHORT).show()
+        val bundle = Bundle().apply {
+            putString("image", article.urlToImage)
+            putString("title",article.title)
+            putString("description",article.description)
+        }
+        val intent = Intent(requireContext(), SummaryActivity::class.java)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 }

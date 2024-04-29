@@ -40,6 +40,9 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = repository.getTopHeadlines("in", category)
+                for(article in response.data!!.articles){
+                    article.category = category
+                }
                 liveDataToUpdate.postValue(response)
             } catch (e: Exception) {
                 liveDataToUpdate.postValue(Resource.Error(e.message.toString()))

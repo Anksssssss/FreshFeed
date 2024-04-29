@@ -9,9 +9,37 @@ import com.example.freshfeed.R
 import com.example.freshfeed.databinding.NewsItemBinding
 import com.example.freshfeed.models.Article
 
-class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(
+    private val listener: RecyclerViewEvent
+): RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
 
-    inner class ViewHolder(var binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ViewHolder(var binding: NewsItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener{
+           init {
+               binding.root.setOnClickListener(this)
+           }
+
+            fun bind(position: Int){
+                Glide.with(itemView)
+                    .load(newsList[position].urlToImage)
+                    .centerCrop()
+                    .placeholder(R.drawable.placeholder)
+                    .error(R.drawable.error_image)
+                    .into(binding.newsImage)
+
+                    binding.newsTitle.text = newsList[position].title
+                    binding.newsSource.text = buildString {
+                    append("src: ")
+                    append(newsList[position].source!!.name)
+                }
+            }
+            override fun onClick(v: View?) {
+                val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(newsList[position])
+                    }
+            }
+
+    }
 
     private var newsList = emptyList<Article>()
 
@@ -27,24 +55,15 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: NewsAdapter.ViewHolder, position: Int) {
-
-        Glide.with(holder.itemView)
-            .load(newsList[position].urlToImage)
-            .centerCrop()
-            .placeholder(R.drawable.placeholder) // Placeholder image resource
-            .error(R.drawable.error_image) // Error image resource
-            .into(holder.binding.newsImage)
-
-        holder.binding.newsTitle.text = newsList[position].title
-        holder.binding.newsSource.text = buildString {
-            append("src: ")
-            append(newsList[position].source!!.name)
-        }
+        holder.bind(position)
     }
 
     override fun getItemCount(): Int {
         return newsList.size
     }
 
+    interface RecyclerViewEvent{
+        fun onItemClick(article:Article)
+    }
 
 }
