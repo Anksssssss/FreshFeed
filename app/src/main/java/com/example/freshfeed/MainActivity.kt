@@ -1,24 +1,19 @@
 package com.example.freshfeed
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.freshfeed.adapters.FragmentPageAdapter
-import com.example.freshfeed.api.Resource
 import com.example.freshfeed.databinding.ActivityMainBinding
-import com.example.freshfeed.models.TopHeadlines
 import com.example.freshfeed.repo.Repository
-import com.example.freshfeed.utils.NetworkConnection
 import com.example.freshfeed.viewModels.NewsViewModel
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -40,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
         tabLayout = binding.tabLayout
         viewPager2 = binding.viewPager2
+        setSupportActionBar(binding.toolbar)
         initView()
     }
     private fun initView() {
@@ -71,4 +67,26 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.my_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_search -> {
+                //Toast.makeText(this,"Search",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.saved -> {
+                //Toast.makeText(this,"Save",Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SavedNewsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

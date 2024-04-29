@@ -22,6 +22,7 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
     val scienceNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val sportsNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
     val technologyNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
+    val searchNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
 
     fun getTopHeadlines(category: String = "general") {
         // Based on the category, update the appropriate LiveData
@@ -46,6 +47,18 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
                 liveDataToUpdate.postValue(response)
             } catch (e: Exception) {
                 liveDataToUpdate.postValue(Resource.Error(e.message.toString()))
+            }
+        }
+    }
+
+    fun searchNews(query:String){
+        searchNewsLiveData.postValue(Resource.Loading())
+        viewModelScope.launch(Dispatchers.IO) {
+            try{
+                val response = repository.getSearchedNews(query)
+                searchNewsLiveData.postValue(response)
+            }catch (e: Exception){
+                searchNewsLiveData.postValue(Resource.Error(e.message.toString()))
             }
         }
     }

@@ -32,4 +32,10 @@ class Repository(
     fun deleteAllArticles(category:String){
         newsDatabase.newsDao().deleteAll(category)
     }
+
+    suspend fun getSearchedNews(
+        query: String
+    ): Resource<TopHeadlines> {
+        return safeApiCall { newsApi.getSearchedNews(query,BuildConfig.apiKey) }
+    }
 }
