@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.freshfeed.adapters.FragmentPageAdapter
 import com.example.freshfeed.databinding.ActivityMainBinding
+import com.example.freshfeed.fragments.BottomSheetFragment
 import com.example.freshfeed.repo.Repository
 import com.example.freshfeed.viewModels.NewsViewModel
 import com.google.android.material.tabs.TabLayout
@@ -84,6 +85,11 @@ class MainActivity : AppCompatActivity() {
                 //Toast.makeText(this,"Save",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, SavedNewsActivity::class.java)
                 startActivity(intent)
+                true
+            }
+            R.id.settings->{
+                val bottomSheetFragment = BottomSheetFragment()
+                bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
                 true
             }
             else -> super.onOptionsItemSelected(item)

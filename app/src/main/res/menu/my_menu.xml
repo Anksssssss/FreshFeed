@@ -15,4 +15,9 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/save"/>
 
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        android:icon="@drawable/save"/>
+
 </menu>

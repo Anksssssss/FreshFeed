@@ -25,7 +25,6 @@ class NewsViewModel:ViewModel(){
     val technologyNewsLiveData = MutableLiveData<Resource<TopHeadlines>>()
 
     fun getTopHeadlines(category: String = "general") {
-        // Based on the category, update the appropriate LiveData
         val liveDataToUpdate = when (category) {
             "general" -> generalNewsLiveData
             "business" -> businessNewsLiveData
@@ -50,5 +49,6 @@ class NewsViewModel:ViewModel(){
             }
         }
     }
+
 
 }
