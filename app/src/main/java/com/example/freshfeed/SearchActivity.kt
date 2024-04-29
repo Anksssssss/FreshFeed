@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -73,6 +74,8 @@ class SearchActivity : AppCompatActivity(), NewsAdapter.RecyclerViewEvent {
             val query = binding.editText.text.toString()
             if(query.isNotEmpty()){
                 viewModel.searchNews(query)
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding.editText.windowToken, 0)
                 binding.editText.clearFocus()
             }else{
                 Toast.makeText(this,"Please enter something",Toast.LENGTH_SHORT).show()
@@ -95,6 +98,7 @@ class SearchActivity : AppCompatActivity(), NewsAdapter.RecyclerViewEvent {
             putString("image", article.urlToImage)
             putString("title",article.title)
             putString("description",article.description)
+            putString("source",article.source?.name)
         }
         val intent = Intent(this, SummaryActivity::class.java)
         intent.putExtras(bundle)

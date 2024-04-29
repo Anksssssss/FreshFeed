@@ -10,29 +10,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/newsImage"
-            />
-
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Summary"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textAlignment="center"
-            app:layout_constraintTop_toTopOf="@id/backBtn"
-            app:layout_constraintBottom_toBottomOf="@id/backBtn"
-            app:layout_constraintStart_toEndOf="@id/backBtn"/>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Summary"
+            app:titleTextColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--        <ImageView-->
+<!--            android:id="@+id/backBtn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="4dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:src="@drawable/baseline_arrow_back_24"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintBottom_toTopOf="@id/newsImage"-->
+<!--            />-->
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Summary"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="25sp"-->
+<!--            android:textAlignment="center"-->
+<!--            app:layout_constraintTop_toTopOf="@id/backBtn"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/backBtn"-->
+<!--            app:layout_constraintStart_toEndOf="@id/backBtn"/>-->
 
     <ImageView
         android:id="@+id/newsImage"
@@ -43,7 +54,7 @@
         android:layout_marginBottom="8dp"
         android:src="@drawable/placeholder"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

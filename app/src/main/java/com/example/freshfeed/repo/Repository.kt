@@ -6,6 +6,7 @@ import com.example.freshfeed.api.NewsApi
 import com.example.freshfeed.api.Resource
 import com.example.freshfeed.db.NewsDatabase
 import com.example.freshfeed.models.Article
+import com.example.freshfeed.models.SavedArticles
 import com.example.freshfeed.models.TopHeadlines
 
 
@@ -38,4 +39,16 @@ class Repository(
     ): Resource<TopHeadlines> {
         return safeApiCall { newsApi.getSearchedNews(query,BuildConfig.apiKey) }
     }
+    suspend fun insertSavedArticle(article:SavedArticles){
+        newsDatabase.newsDao().insertSavedNews(article)
+    }
+
+    suspend fun getAllSavedArticles():List<SavedArticles>{
+        return newsDatabase.newsDao().getAllSavedArticles()
+    }
+
+    fun deleteSavedArticle(article: SavedArticles){
+        newsDatabase.newsDao().deleteFromSavedNews(article)
+    }
+
 }

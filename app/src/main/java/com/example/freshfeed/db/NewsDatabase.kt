@@ -6,13 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.freshfeed.models.Article
+import com.example.freshfeed.models.SavedArticles
 
-@Database(entities = [Article::class], version = 3, exportSchema = false)
+@Database(entities = [Article::class,SavedArticles::class], version = 8, exportSchema = false)
 @TypeConverters(SourceTypeConverter::class)
 abstract class NewsDatabase: RoomDatabase() {
 
     abstract fun newsDao():NewsDao
-
     companion object{
         @Volatile
         private var INSTANCE: NewsDatabase?= null

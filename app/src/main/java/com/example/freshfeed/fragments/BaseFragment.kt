@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -140,9 +141,12 @@ abstract class BaseNewsFragment : Fragment(), NewsAdapter.RecyclerViewEvent {
             putString("image", article.urlToImage)
             putString("title",article.title)
             putString("description",article.description)
+            putString("source",article.source?.name)
+
         }
         val intent = Intent(requireContext(), SummaryActivity::class.java)
         intent.putExtras(bundle)
         startActivity(intent)
     }
+
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.freshfeed.MyApplication
 import com.example.freshfeed.api.Resource
+import com.example.freshfeed.models.SavedArticles
 import com.example.freshfeed.models.TopHeadlines
 import com.example.freshfeed.repo.Repository
 import kotlinx.coroutines.Dispatchers
@@ -62,4 +63,5 @@ class NewsViewModel(application: Application):AndroidViewModel(application) {
             }
         }
     }
+
 }
